@@ -1,0 +1,62 @@
+---
+
+resources:
+- name: jhipster-git
+  type: git
+  source:
+    uri: test
+    branch: master
+    private_key: ((GIT_SSH_KEY.private_key))
+
+
+
+- name: jhipster-image
+  type: docker-image
+  source:
+    aws_access_key_id: ((AWS_ACCESS_KEY))
+    aws_secret_access_key: ((AWS_SECRET_ACCESS_KEY))
+    repository: /
+
+
+jobs:
+- name: unit-test
+  plan:
+  - get: jhipster-git
+    trigger: true
+  - task: gradle-test-task
+    file: jhipster/ci/task/gradle-test-task.yml
+    params:
+      GRADLE_ARGS: clean unitTest
+
+- name: integration-test
+  plan:
+  - get: jhipster-git
+    trigger: true
+  - task: gradle-test-task
+    file: jhipster/ci/task/gradle-test-task.yml
+    params:
+      GRADLE_ARGS: clean integrationTest
+
+
+
+- name: build
+  plan:
+  - get: jhipster-git
+    trigger: true
+    passed: [unit-test,integration-test]
+  - task: gradle-build-task
+    file: jhipster/ci/task/gradle-build-task.yml
+    params:
+      GRADLE_ARGS: build -x test
+  - put: jhipster-image
+    params:
+      build: jhipster-build
+      tag_file: jhipster-version-output/number
+- name: deploy-staging
+  plan:
+  - get: jhipster-git
+    trigger: true
+    passed: [build]
+  - task: deploy-task
+    file: jhipster/ci/task/deploy-task.yml
+

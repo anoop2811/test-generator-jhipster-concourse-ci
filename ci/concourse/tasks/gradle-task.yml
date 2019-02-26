@@ -1,0 +1,15 @@
+---
+platform: linux
+
+image_resource:
+    type: docker-image
+    source: {repository: anoop2811/java8-gradle} #Switch to a public repo
+inputs:
+- name: test
+
+outputs:
+- name: jhipster-build
+run:
+    path: ci/task/gradle-build-task.sh
+caches:
+- path: ~/.gradle/
