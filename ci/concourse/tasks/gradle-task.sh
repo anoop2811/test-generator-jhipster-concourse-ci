@@ -1,3 +1,6 @@
+#!/bin/bash
 set -eux
 
-gradle
+echo "TESTINGGGGG"
+
+./gradlew ${GRADLE_ARGS}

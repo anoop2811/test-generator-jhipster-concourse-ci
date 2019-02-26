@@ -4,7 +4,7 @@ resources:
 - name: jhipster-git
   type: git
   source:
-    uri: test
+    uri: git@github.com:anoop2811/test-generator-jhipster-concourse-ci.git
     branch: master
     private_key: ((GIT_SSH_KEY.private_key))
 
@@ -22,9 +22,10 @@ jobs:
 - name: unit-test
   plan:
   - get: jhipster-git
+    resource: jhipster-git
     trigger: true
   - task: gradle-test-task
-    file: jhipster/ci/task/gradle-test-task.yml
+    file: ./ci/concourse/tasks/gradle-task.yml
     params:
       GRADLE_ARGS: clean unitTest
 
@@ -33,7 +34,7 @@ jobs:
   - get: jhipster-git
     trigger: true
   - task: gradle-test-task
-    file: jhipster/ci/task/gradle-test-task.yml
+    file: ci/concourse/tasks/gradle-task.yml
     params:
       GRADLE_ARGS: clean integrationTest
 
