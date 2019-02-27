@@ -22,31 +22,37 @@ jobs:
 - name: unit-test
   plan:
   - get: jhipster-git
-    resource: jhipster-git
     trigger: true
   - task: gradle-test-task
     file: jhipster-git/ci/concourse/tasks/gradle-task.yml
     params:
-      GRADLE_ARGS: clean unitTest
+      GRADLE_ARGS: clean test
 
+- name: ui-test
+  plan:
+  - get: jhipster-git
+    trigger: true
+  - task: gradle-test-task
+    file: jhipster-git/ci/concourse/tasks/gradle-task.yml
+    params:
+      GRADLE_ARGS: clean yarn test
 - name: integration-test
   plan:
   - get: jhipster-git
     trigger: true
   - task: gradle-test-task
-    file: ci/concourse/tasks/gradle-task.yml
+    file: jhipster-git/ci/concourse/tasks/gradle-task.yml
     params:
-      GRADLE_ARGS: clean integrationTest
-
+      GRADLE_ARGS: clean cucumberTest
 
 
 - name: build
   plan:
   - get: jhipster-git
     trigger: true
-    passed: [unit-test,integration-test]
+    passed: [unit-test,integration-test, ui-test]
   - task: gradle-build-task
-    file: jhipster/ci/task/gradle-build-task.yml
+    file: jhipster-git/ci/concourse/tasks/gradle-task.yml
     params:
       GRADLE_ARGS: build -x test
   - put: jhipster-image
@@ -59,5 +65,5 @@ jobs:
     trigger: true
     passed: [build]
   - task: deploy-task
-    file: jhipster/ci/task/deploy-task.yml
+    file: jhipster/ci/concourse/tasks/deploy-task.yml
 

@@ -8,8 +8,14 @@ image_resource:
 inputs:
 - name: jhipster-git
 
+outputs:
+- name: jhipster-build
+
 run:
   path: jhipster-git/ci/concourse/tasks/gradle-task.sh
 
 params:
   GRADLE_ARGS:
+
+caches:
+- path: ~/.gradle/
