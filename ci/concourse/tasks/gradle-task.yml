@@ -9,7 +9,7 @@ inputs:
 - name: jhipster-git
 
 run:
-  path: ./ci/concourse/tasks/gradle-task.sh
+  path: jhipster-git/ci/concourse/tasks/gradle-task.sh
 
 params:
   GRADLE_ARGS:

@@ -25,7 +25,7 @@ jobs:
     resource: jhipster-git
     trigger: true
   - task: gradle-test-task
-    file: ./ci/concourse/tasks/gradle-task.yml
+    file: jhipster-git/ci/concourse/tasks/gradle-task.yml
     params:
       GRADLE_ARGS: clean unitTest
 
