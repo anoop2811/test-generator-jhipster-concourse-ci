@@ -35,7 +35,7 @@ jobs:
   - task: gradle-test-task
     file: jhipster-git/ci/concourse/tasks/gradle-task.yml
     params:
-      GRADLE_ARGS: clean yarn_test
+      GRADLE_ARGS: clean yarn_install yarn_test
 - name: integration-test
   plan:
   - get: jhipster-git
