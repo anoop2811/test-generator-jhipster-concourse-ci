@@ -1,0 +1,2 @@
+fly -t bucc dp -p test
+fly -t bucc sp -p test -c ci/concourse/pipeline.yml
