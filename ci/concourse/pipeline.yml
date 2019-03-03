@@ -8,14 +8,12 @@ resources:
     branch: master
     private_key: ((GIT_SSH_KEY.private_key))
 
-
-
 - name: jhipster-image
   type: docker-image
   source:
-    aws_access_key_id: ((AWS_ACCESS_KEY))
-    aws_secret_access_key: ((AWS_SECRET_ACCESS_KEY))
-    repository: /
+    username: anoop2811
+    password: ((DOCKER_REGISTRY_CRED))
+    repository: https://registry.hub.docker.com
 
 
 jobs:
@@ -54,11 +52,11 @@ jobs:
   - task: gradle-build-task
     file: jhipster-git/ci/concourse/tasks/gradle-task.yml
     params:
-      GRADLE_ARGS: build -x test
+      GRADLE_ARGS: clean bootWar -x test
   - put: jhipster-image
     params:
       build: jhipster-build
-      tag_file: jhipster-version-output/number
+
 - name: deploy-staging
   plan:
   - get: jhipster-git
