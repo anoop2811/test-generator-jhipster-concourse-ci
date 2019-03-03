@@ -13,6 +13,7 @@ outputs:
 - name: jhipster-build
 
 run:
+  user: root
   path: jhipster-git/ci/concourse/tasks/gradle-task.sh
 
 params:
