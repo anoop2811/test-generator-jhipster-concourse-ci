@@ -1,2 +1,3 @@
-fly -t bucc dp -p test
-fly -t bucc sp -p test -c ci/concourse/pipeline.yml
+fly -t bucc dp -p test -n
+fly -t bucc sp -p test -c ci/concourse/pipeline.yml -n
+fly -t bucc up -p test 
