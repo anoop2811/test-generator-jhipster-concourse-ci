@@ -13,7 +13,7 @@ resources:
   source:
     username: anoop2811
     password: ((DOCKER_REGISTRY_CRED))
-    repository: https://registry.hub.docker.com
+    repository: anoop2811/jhipster
 
 
 jobs:
@@ -56,6 +56,7 @@ jobs:
   - put: jhipster-image
     params:
       build: jhipster-build
+      tag_as_latest: true
 
 - name: deploy-staging
   plan:
